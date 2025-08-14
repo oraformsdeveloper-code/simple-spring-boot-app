@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -48,20 +49,9 @@ public class PersonController {
     }
 
 
-    @PutMapping("{id}")
-    public ResponseEntity<PersonDto> updatePerson(@PathVariable long id, @RequestBody PersonDto personDto) {
-        log.info(">> Получили объект: {}", personDto);
-        PersonDto person  = personService.getById(id);
-        if (personDto.getEmail() != null) {
-            person.setEmail(personDto.getEmail());
-        }
-        if (personDto.getName() != null) {
-            person.setName(personDto.getName());
-        }
-        personService.update(person);
-        log.info(">> После обновления: {}", personDto);
-        return new ResponseEntity<>(person, HttpStatus.OK);
+    @PutMapping
+    public ResponseEntity<PersonDto> updatePerson(@Validated @RequestBody PersonDto personDto) {
+        log.debug(">> Получили объект: {}", personDto);
+        return ResponseEntity.ok(personService.update(personDto));
     }
-
-    // TODO: getAll, getById, updatePerson, deleteById
 }

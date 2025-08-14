@@ -28,3 +28,15 @@ databaseChangeLog:
                   name: created_at
                   type: TIMESTAMP
                   defaultValueComputed: CURRENT_TIMESTAMP
+  - changeSet:
+      id: 2
+      author: ctdpr
+      changes:
+        - addColumn:
+            tableName: person
+            columns:
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+
