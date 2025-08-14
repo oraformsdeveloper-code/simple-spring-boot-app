@@ -1,0 +1,13 @@
+server:
+  port: 8089
+  servlet:
+    context-path: /api
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/testdb
+    username: postgres
+    password: postgres
+springdoc:
+  swagger-ui:
+    path: /v1/swagger-ui
