@@ -24,10 +24,11 @@ public class PersonServiceImpl implements PersonService {
     private final PersonMapper personMapper;
 
     @Override
-    public void create(PersonDto personDto) {
+    public PersonDto create(PersonDto personDto) {
         log.debug("Работает метод create");
         Person person = personMapper.toEntity(personDto);
-        personRepository.save(person);
+        person = personRepository.save(person);
+        return personMapper.toPersonDto(person);
     }
 
     @Override
@@ -36,9 +37,7 @@ public class PersonServiceImpl implements PersonService {
         Person person = personRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Person not found with id: " + id));
 
-        PersonDto personDto = personMapper.toPersonDto(person);
-
-        return personDto;
+        return personMapper.toPersonDto(person);
     }
 
     @Override
@@ -53,7 +52,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public void deleteById(Long id) {
-        Person person = personRepository.findById(id)
+        personRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Person not found with id: " + id));
 
         personRepository.deleteById(id);

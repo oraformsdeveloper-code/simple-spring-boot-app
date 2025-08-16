@@ -4,24 +4,27 @@ import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.mapper.PersonMapper;
 import com.example.demo.model.Person;
 import com.example.demo.repository.PersonRepository;
-import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlMergeMode;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
+import static org.springframework.test.context.jdbc.SqlMergeMode.MergeMode.MERGE;
 
 @SpringBootTest
 @ActiveProfiles("test")
-@Transactional
+@Sql(scripts = "classpath:sql/populate_person_table.sql")
+@Sql(statements = "TRUNCATE TABLE person RESTART IDENTITY", executionPhase = AFTER_TEST_METHOD)
+@SqlMergeMode(MERGE)
 class PersonServiceTest {
 
     @Autowired
@@ -33,7 +36,7 @@ class PersonServiceTest {
     @MockitoSpyBean
     private PersonMapper personMapper;
 
-    @BeforeEach
+/*    @BeforeEach
     void setUp() {
         var person1 = new Person();
         person1.setName("name1");
@@ -43,7 +46,7 @@ class PersonServiceTest {
         person2.setEmail("email2@email.com");
         personRepository.save(person1);
         personRepository.save(person2);
-    }
+    }*/
 
     @Test
     @DisplayName("Проверка нахождения всех пользователей.")
@@ -76,16 +79,20 @@ class PersonServiceTest {
     @Test
     @DisplayName("Проверка удаления существующей персоны")
     void testDeleteById_personFound() {
-        Long personId = 1L;
-        personService.deleteById(personId);
-        var exception = assertThrows(ResourceNotFoundException.class, () -> personService.deleteById(personId));
+        // given
+        long personId = 1L;
+
+        // when
+        assertDoesNotThrow(() -> personService.deleteById(personId));
+
+        // then
+        assertTrue(personRepository.findById(personId).isEmpty());
+        verify(personRepository).deleteById(personId);
     }
 
     @Test
     @DisplayName("Проверка удаления НЕ существующей персоны")
     void testDeleteById_personNotFound() {
-
-
         var exception = assertThrows(ResourceNotFoundException.class, () -> personService.deleteById(3L));
         assertEquals("Person not found with id: 3", exception.getMessage());
     }

@@ -9,7 +9,6 @@ import static org.mapstruct.NullValueCheckStrategy.ALWAYS;
 @Mapper(componentModel = "spring", nullValueCheckStrategy = ALWAYS)
 public interface PersonMapper {
 
-
     Person toEntity(PersonDto personDto);
 
     PersonDto toPersonDto(Person person);

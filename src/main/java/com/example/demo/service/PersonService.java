@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface PersonService {
 
-    void create(PersonDto personDto);
+    PersonDto create(PersonDto personDto);
 
     PersonDto getById(Long id);
 

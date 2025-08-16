@@ -20,10 +20,11 @@ public class PersonController {
     private final PersonService personService;
 
     @PostMapping
-    public ResponseEntity<Void> createPerson(@RequestBody PersonDto personDto) {
+    public ResponseEntity<PersonDto> createPerson(@RequestBody PersonDto personDto) {
         log.info(">> Получили объект: {}", personDto);
-        personService.create(personDto);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(personService.create(personDto));
     }
 
     @GetMapping("{id}")
