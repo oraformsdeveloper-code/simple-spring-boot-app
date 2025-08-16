@@ -42,7 +42,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public List<PersonDto> getAl() {
+    public List<PersonDto> getAll() {
         List<Person> persons = personRepository.findAll();
         List<PersonDto> personDtos = new ArrayList<>();
         for (Person person : persons) {

@@ -23,7 +23,7 @@ public class PersonController {
     public ResponseEntity<Void> createPerson(@RequestBody PersonDto personDto) {
         log.info(">> Получили объект: {}", personDto);
         personService.create(personDto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("{id}")
@@ -36,7 +36,7 @@ public class PersonController {
 
     @GetMapping
     public ResponseEntity<List<PersonDto>> getAll() {
-        List<PersonDto> persons = personService.getAl();
+        List<PersonDto> persons = personService.getAll();
         return ResponseEntity.ok(persons);
     }
 

@@ -11,16 +11,10 @@ public class CommonExceptionHandler {
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ExceptionHandler(ResourceNotFoundException.class)
-    public Object handleNotFoundException(ResourceNotFoundException exception) {
-        // TODO: заменить на ErrorResponseDto
-        //return Map.of("description", exception.getMessage());
-        return new ErrorResponseDto(exception.getMessage());
-//        return ResponseEntity
-//                .status(HttpStatus.NOT_FOUND)
-//                .body(new ErrorResponseDto(exception.getMessage()));
-
-//        return ResponseEntity
-//                .status(HttpStatus.NOT_FOUND)
-//                .body(new ErrorMessage(exception.getMessage()));
+    public ErrorResponseDto handleNotFoundException(ResourceNotFoundException exception) {
+        return ErrorResponseDto.builder()
+                .description("Сущность не найдена.")
+                .errorMessage(exception.getMessage())
+                .build();
     }
 }

@@ -10,11 +10,9 @@ public interface PersonService {
 
     PersonDto getById(Long id);
 
-    List<PersonDto> getAl();
+    List<PersonDto> getAll();
 
     void deleteById(Long id);
 
-
     PersonDto update(PersonDto person);
-
 }

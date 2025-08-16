@@ -1,17 +1,11 @@
 package com.example.demo.dto;
 
+import lombok.Builder;
+import lombok.Data;
+
+@Builder
+@Data
 public class ErrorResponseDto {
-    String description;
-
-    public ErrorResponseDto(String description) {
-        this.description = description;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    private String description;
+    private String errorMessage;
 }
